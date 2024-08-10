@@ -13,6 +13,69 @@ This project is a Django application configured to handle API requests and manag
 - Docker and Docker Compose
 - Redis (if not using Docker)
 
+## Celery configuration files
+![image](https://github.com/user-attachments/assets/b8839c66-49b5-423b-b1f0-129ac590581e)
+```python
+from __future__ import absolute_import, unicode_literals
+import os
+from celery import Celery
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chotix.settings')
+app = Celery('chotix')
+app.config_from_object('django.conf:settings', namespace='CELERY')
+app.autodiscover_tasks()
+```
+
+![image](https://github.com/user-attachments/assets/d513de86-51b2-47e7-ac25-36324ce9572c)
+
+```bash
+CELERY_BROKER_URL=redis://redis:6379/0
+CELERY_RESULT_BACKEND=redis://redis:6379/0
+```
+
+![image](https://github.com/user-attachments/assets/a7fe2a21-8c9c-44fd-9853-c72265d55459)
+```yaml
+version: '3.8'
+
+services:
+  django:
+    build: .
+    container_name: django
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    environment:
+      - SDLX_API_KEY=sk-fgPtG54WDQp9GhjRI8c6aFKOnWF57hypVsoqodrWD6XkBJ87
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    command: celery -A chotix worker -l INFO
+    volumes:
+      - .:/app
+    depends_on:
+      - django
+      - redis
+    env_file:
+      - .env
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+```
 ## Setup and Installation
 
 ### 1. Clone the Repository
