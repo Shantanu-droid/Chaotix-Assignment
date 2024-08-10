@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Images</title>
+    <style>
+        .image-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .image-footer {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generated Images</h1>
+    {% for image in images %}
+        <div class="image-container">
+            <img src="http://localhost:8000/media/{{ image.url }}" alt="{{ image.name }}">
+            <div class="image-footer">{{ image.name }}</div>
+        </div>
+    {% endfor %}
+</body>
+</html>
