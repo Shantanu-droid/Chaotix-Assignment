@@ -90,6 +90,7 @@ The application is set up to run within Docker containers, including Django, Cel
 
 ### Build and Run Containers
 ```bash
+cd chotix
 docker-compose up --build
 ```
 ### Using the Application
