@@ -51,7 +51,7 @@ services:
     env_file:
       - .env
     environment:
-      - SDLX_API_KEY=sk-fgPtG54WDQp9GhjRI8c6aFKOnWF57hypVsoqodrWD6XkBJ87
+      - SDLX_API_KEY=<your key>
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
 
