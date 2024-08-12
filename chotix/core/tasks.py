@@ -10,8 +10,7 @@ def generate_sdxl_images(text):
 
     engine_id = "stable-diffusion-v1-6"
     api_host = 'https://api.stability.ai'
-    api_key = "sk-fgPtG54WDQp9GhjRI8c6aFKOnWF57hypVsoqodrWD6XkBJ87"
-
+    api_key = os.environ.get("SDLX_API_KEY")
     if api_key is None:
         raise Exception("Missing Stability API key.")
 
